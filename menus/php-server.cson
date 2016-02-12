@@ -5,7 +5,7 @@
     {label: 'PHP Server route file', command: 'php-server:start-tree-route'}
     {type: 'separator'}
   ]
-  'atom-text-editor': [
+  'atom-text-editor[data-grammar="text html php"]': [ # or atom-text-editor[data-grammar*="php"]
     {type: 'separator'}
     {label: 'PHP Server here', command: 'php-server:start-document'}
     {type: 'separator'}
