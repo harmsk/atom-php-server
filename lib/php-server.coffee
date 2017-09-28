@@ -35,6 +35,21 @@ module.exports =
       type: 'string'
       enum: ['all', 'none']
       default: 'all'
+    errorLog:
+      title: 'Error log'
+      description: 'Display errors log'
+      type: 'boolean'
+      default: true
+    accessLog:
+      title: 'Access log'
+      description: 'Display access log'
+      type: 'boolean'
+      default: true
+    openBrowser:
+      title: 'Open browser'
+      description: 'Open url in browser'
+      type: 'boolean',
+      default: true
 
 
   server: null
@@ -135,7 +150,7 @@ module.exports =
     @server.start =>
       @view.setTitle "PHP Server: <a href=\"#{@server.href}\">#{@server.href}</a>", true
 
-      @view.addMessage "Listening on #{@server.href}", atom.config.get('php-server.expandOnLog')
+      @view.addSuccess "Listening on #{@server.href}", atom.config.get('php-server.expandOnLog')
       @view.addMessage "Document root is #{@server.documentRoot}", atom.config.get('php-server.expandOnLog')
 
       href = @server.href
@@ -143,7 +158,8 @@ module.exports =
         href += '/' + basename
 
       # Launch browser
-      open href
+      if atom.config.get('php-server.openBrowser')
+        open href
 
 
   stop: ->
