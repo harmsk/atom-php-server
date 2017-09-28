@@ -166,7 +166,9 @@ module.exports =
     @server?.stop()
 
     @view?.clear()
-    @view?.detach()
+    @view?.close()
+    # TODO: currently causing exception...
+    # @view?.detach()
 
     @server = null
     @view = null
