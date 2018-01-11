@@ -45,10 +45,10 @@ module.exports =
       description: 'Display access log'
       type: 'boolean'
       default: true
-    openBrowser:
-      title: 'Open browser'
-      description: 'Open url in browser'
-      type: 'boolean',
+    openInBrowser:
+      title: 'Open in browser'
+      description: 'Open browser at local URL on server start'
+      type: 'boolean'
       default: true
 
 
@@ -158,7 +158,7 @@ module.exports =
         href += '/' + basename
 
       # Launch browser
-      if atom.config.get('php-server.openBrowser')
+      if atom.config.get('php-server.openInBrowser')
         open href
 
 
@@ -167,8 +167,6 @@ module.exports =
 
     @view?.clear()
     @view?.close()
-    # TODO: currently causing exception...
-    # @view?.detach()
 
     @server = null
     @view = null
