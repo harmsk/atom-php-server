@@ -1,15 +1,15 @@
 'context-menu':
   '.tree-view': [
     {type: 'separator'}
-    {label: 'PHP Server here', command: 'php-server:start-tree'}
-    {label: 'PHP Server route file', command: 'php-server:start-tree-route'}
-    {label: 'PHP Server Stop', command: 'php-server:stop'}
+    {label: 'PHP: Start Server', command: 'php-server:start-tree'}
+    {label: 'PHP: Server Route File', command: 'php-server:start-tree-route'}
+    {label: 'PHP: Stop Server', command: 'php-server:stop'}
     {type: 'separator'}
   ]
   'atom-text-editor[data-grammar="text html php"]': [ # or atom-text-editor[data-grammar*="php"]
     {type: 'separator'}
-    {label: 'PHP Server here', command: 'php-server:start-document'}
-    {label: 'PHP Server Stop', command: 'php-server:stop'}
+    {label: 'PHP: Start Server', command: 'php-server:start-document'}
+    {label: 'PHP: Stop Server', command: 'php-server:stop'}
     {type: 'separator'}
   ]
 
@@ -18,10 +18,10 @@
   submenu: [
     label: 'PHP Server',
     submenu: [
-      { label: 'Start in project root', command: 'php-server:start' }
-      { label: 'Start in folder selected in tree', command: 'php-server:start-tree' }
-      { label: 'Start in folder of current file', command: 'php-server:start-document' }
-      { label: 'Stop server', command: 'php-server:stop' }
+      { label: 'Start in Project Root', command: 'php-server:start' }
+      { label: 'Start in Folder Selected in Tree', command: 'php-server:start-tree' }
+      { label: 'Start in Folder of Current File', command: 'php-server:start-document' }
+      { label: 'Stop Server', command: 'php-server:stop' }
     ]
   ]
 }]
