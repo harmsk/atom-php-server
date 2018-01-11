@@ -1,14 +1,33 @@
-{$, View} = require 'atom-space-pen-views'
 {MessagePanelView, PlainMessageView, LineMessageView} = require 'atom-message-panel'
 
 module.exports =
-  class PhpServerView extends MessagePanelView
-    addMessage: (lines, logLevel) ->
+  class PhpServerView
+    constructor: ->
+      @panel = new MessagePanelView(title: 'PHP Server Console')
+      @body = @panel.body
+
+      @dock = {
+        element: @body[0],
+        getTitle: () => 'PHP Server Console',
+        getURI: () => 'atom://php-server/console',
+        getDefaultLocation: () => 'bottom'
+      }
+
+    show: ->
+      atom.workspace.open(@dock);
+
+    hide: ->
+      atom.workspace.hide(@dock);
+
+    toggle: ->
+      atom.workspace.toggle(@dock);
+
+    addMessage: (lines, logLevel, raw = false) ->
       for text in lines.split "\n"
         linematch = /^(.+)in ([a-z\\\/\.\-_]+) on line ([0-9]+)$/i
         match = text.match linematch
         if match
-          @add(new LineMessageView(
+          @panel.add(new LineMessageView(
             line: match[3]
             file: match[2]
             message: match[1]
@@ -16,21 +35,26 @@ module.exports =
           ))
         else
           if(atom.config.get('php-server.accessLog'))
-            @add(new PlainMessageView(
+            @panel.add(new PlainMessageView(
               message: text
+              raw: raw
             ))
-        @toggle() if !@body.isVisible() && logLevel == 'all'
+        @show() if logLevel == 'all'
         @body.scrollToBottom()
-    addSuccess: (lines) ->
-      @add(new PlainMessageView(
+
+    addSuccess: (lines, raw = false) ->
+      @panel.add(new PlainMessageView(
         message: lines
-        className: 'text-success'
-      ))
-    addError: (lines) ->
-      @add(new PlainMessageView(
-        message: lines
-        className: 'text-error'
+        className: 'text-success',
+        raw: raw
       ))
 
-    hide: ->
-      @toggle() if @body.isVisible()
+    addError: (lines, raw = false) ->
+      @panel.add(new PlainMessageView(
+        message: lines
+        className: 'text-error'
+        raw: false
+      ))
+
+    clear: ->
+      @panel.clear()

@@ -34,7 +34,7 @@ module.exports =
       description: 'Expands the server console window when selected requests are received by the server'
       type: 'string'
       enum: ['all', 'none']
-      default: 'all'
+      default: 'none'
     errorLog:
       title: 'Error log'
       description: 'Display errors log'
@@ -67,6 +67,7 @@ module.exports =
 
   deactivate: ->
     @stop()
+    @view = null
 
 
   startTree: ->
@@ -94,33 +95,29 @@ module.exports =
   start: (documentroot, router) ->
     # Stop server if currently running
     if @server
-      @server.stop()
-      @server = null
+      @stop()
 
     # Set up panel
     if !@view
-      @view = new PhpServerView(
-        title: "PHP Server: Launching..."
-      )
+      @view = new PhpServerView()
 
-    @view.attach()
-
-    # Collapse view if expandOnLog is set to none
-    if atom.config.get('php-server.expandOnLog') == 'none'
-      @view?.hide()
+    @view.clear()
+    @view.show()
 
     # Launch server in given working directory
     if !documentroot
       documentroot = atom.project.getPaths()[0]
 
     if !documentroot
-      @view.addError "PHP Server could not launch"
+      @view.addError "Failed to launch PHP server"
       @view.addError "Atom project directory not found"
       return
 
     [documentroot, basename] = @splitPath documentroot
 
     @server = new PhpServerServer documentroot, router
+
+    @view.addMessage "Launching PHP server at #{@server.documentRoot}", atom.config.get('php-server.expandOnLog')
 
     # Pass package settings
     @server.path = atom.config.get('php-server.phpPath')
@@ -148,10 +145,7 @@ module.exports =
 
     # Start server
     @server.start =>
-      @view.setTitle "PHP Server: <a href=\"#{@server.href}\">#{@server.href}</a>", true
-
-      @view.addSuccess "Listening on #{@server.href}", atom.config.get('php-server.expandOnLog')
-      @view.addMessage "Document root is #{@server.documentRoot}", atom.config.get('php-server.expandOnLog')
+      @view.addSuccess "PHP Server running on <a href=\"#{@server.href}\">#{@server.href}</a>", atom.config.get('php-server.expandOnLog'), true
 
       href = @server.href
       if basename
@@ -164,12 +158,7 @@ module.exports =
 
   stop: ->
     @server?.stop()
-
-    @view?.clear()
-    @view?.close()
-
     @server = null
-    @view = null
 
 
   clear: ->
