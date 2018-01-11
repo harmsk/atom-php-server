@@ -1,5 +1,7 @@
 PhpServerView = require './php-server-view'
 PhpServerServer = require './php-server-server'
+PhpProvider = require './php-provider'
+
 open = require 'open'
 fs = require 'fs'
 
@@ -64,10 +66,15 @@ module.exports =
     atom.commands.add 'atom-workspace', "php-server:clear", => @clear()
     atom.commands.add 'atom-workspace', "php-server:stop", => @stop()
 
+    @phpProvider = new PhpProvider
+
 
   deactivate: ->
     @stop()
+    @phpProvider = null
 
+  provide: ->
+    @phpProvider
 
   startTree: ->
     @start atom.packages.getLoadedPackage('tree-view').mainModule.treeView.selectedPath
