@@ -3,13 +3,13 @@
     {type: 'separator'}
     {label: 'PHP: Start Server', command: 'php-server:start-tree'}
     {label: 'PHP: Server Route File', command: 'php-server:start-tree-route'}
-    {label: 'PHP: Stop Server', command: 'php-server:stop'}
+    # {label: 'PHP: Stop Server', command: 'php-server:stop'}
     {type: 'separator'}
   ]
   'atom-text-editor[data-grammar="text html php"]': [ # or atom-text-editor[data-grammar*="php"]
     {type: 'separator'}
     {label: 'PHP: Start Server', command: 'php-server:start-document'}
-    {label: 'PHP: Stop Server', command: 'php-server:stop'}
+    # {label: 'PHP: Stop Server', command: 'php-server:stop'}
     {type: 'separator'}
   ]
 
@@ -21,7 +21,7 @@
       { label: 'Start in Project Root', command: 'php-server:start' }
       { label: 'Start in Folder Selected in Tree', command: 'php-server:start-tree' }
       { label: 'Start in Folder of Current File', command: 'php-server:start-document' }
-      { label: 'Stop Server', command: 'php-server:stop' }
+      # { label: 'Stop Server', command: 'php-server:stop' }
     ]
   ]
 }]

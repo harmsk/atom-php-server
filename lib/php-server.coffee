@@ -62,7 +62,11 @@ module.exports =
     atom.commands.add 'atom-workspace', "php-server:start-tree-route", => @startTreeRoute()
     atom.commands.add 'atom-workspace', "php-server:start-document", => @startDocument()
     atom.commands.add 'atom-workspace', "php-server:clear", => @clear()
-    atom.commands.add 'atom-workspace', "php-server:stop", => @stop()
+
+    if process.platform == "win32"
+      # we can't support stop at this time... it doesn't work with Windows
+    else
+      atom.commands.add 'atom-workspace', "php-server:stop", => @stop()
 
 
   deactivate: ->

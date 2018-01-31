@@ -60,9 +60,13 @@ module.exports =
             # Use given file as request router
             options.push @routerFile
 
-
           # Spawn PHP server process
-          @server = spawn @path, options, env: process.env, cwd: @documentRoot
+          if process.platform == "win32"
+            # We can't seem to capture stdout and stderr on windows. We also can't seem to stop the process.
+            # This is a work-around until I have time to figure out why this isn't working as expected on windows.
+            @server = spawn @path, options, env: process.env, cwd: @documentRoot, shell: true, detached: true
+          else
+            @server = spawn @path, options, env: process.env, cwd: @documentRoot
 
           # Catch process failures
           @server.once 'exit', (code) =>
